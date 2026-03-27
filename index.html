@@ -114,6 +114,20 @@
       z-index: 1;
     }
 
+    /* Hero text entrance — soft blur fade-in */
+    @keyframes heroReveal {
+      from {
+        opacity: 0;
+        filter: blur(18px);
+        transform: scale(1.04);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0px);
+        transform: scale(1);
+      }
+    }
+
     .hero-text-img {
       position: relative;
       z-index: 2;
@@ -122,6 +136,7 @@
       height: auto;
       display: block;
       mix-blend-mode: multiply;
+      animation: heroReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     /* ── ABOUT + GALLERY ─────────────────────────────── */
@@ -193,11 +208,17 @@
       min-width: 0;
     }
 
-    .gallery-panel img {
+    /* Blur-on-exit wrapper */
+    .gallery-img-wrap {
+      position: relative;
+    }
+
+    .gallery-panel .gallery-img-wrap img {
       width: 100%;
       height: auto;
       display: block;
-      border-bottom: 1px solid #ebebeb;
+      will-change: filter, opacity;
+      transition: filter 0.1s linear, opacity 0.1s linear;
     }
 
     /* ── BOTTOM NAV CARDS ────────────────────────────── */
@@ -445,13 +466,13 @@
 
     <!-- Desktop background video -->
     <video class="hero-video hero-video-desktop"
-           autoplay muted playsinline preload="auto">
+           autoplay muted loop playsinline preload="auto">
       <source src="bg-videos/desktop.mp4" type="video/mp4">
     </video>
 
     <!-- Mobile background video -->
     <video class="hero-video hero-video-mobile"
-           autoplay muted playsinline preload="auto">
+           autoplay muted loop playsinline preload="auto">
       <source src="bg-videos/mobile.mp4" type="video/mp4">
     </video>
 
@@ -483,18 +504,18 @@
     </div>
 
     <div class="gallery-panel">
-      <img src="web%20site%20photos/473590632_18484678195014406_2227711004829964132_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/240773660_276624683895629_2709360365824284851_n.jpg"   alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/475408871_18491134456014406_2759109246159602391_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/468698309_18475885324014406_5212714903349388167_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/470901844_18480577300014406_5284360698326742336_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/473265367_18484521844014406_7776849205039384392_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/472312608_18482713894014406_284966381724391033_n.jpg"  alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/new8.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/548106514_18531062476014406_8057584508707428130_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/new10.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/500906300_18509519419014406_3049804120803054168_n.jpg" alt="Tattoo by Koray Karagozler">
-      <img src="web%20site%20photos/602998689_18551070835014406_6667830351945043272_n.jpg" alt="Tattoo by Koray Karagozler">
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/473590632_18484678195014406_2227711004829964132_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/240773660_276624683895629_2709360365824284851_n.jpg"   alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/475408871_18491134456014406_2759109246159602391_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/468698309_18475885324014406_5212714903349388167_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/470901844_18480577300014406_5284360698326742336_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/473265367_18484521844014406_7776849205039384392_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/472312608_18482713894014406_284966381724391033_n.jpg"  alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/new8.jpg"                                              alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/548106514_18531062476014406_8057584508707428130_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/new10.jpg"                                             alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/500906300_18509519419014406_3049804120803054168_n.jpg" alt="Tattoo by Koray Karagozler"></div>
+      <div class="gallery-img-wrap"><img src="web%20site%20photos/602998689_18551070835014406_6667830351945043272_n.jpg" alt="Tattoo by Koray Karagozler"></div>
     </div>
 
   </section>
@@ -596,57 +617,43 @@
       }
     }, { passive: true });
 
-  /* ── BOOMERANG VIDEO ─────────────────────────────────
-     Plays forward → reaches end → plays in reverse →
-     reaches start → plays forward again, endlessly.
+  /* ── GALLERY BLUR-ON-EXIT ────────────────────────────
+     Images are fully sharp while in view.
+     As they scroll OUT of the viewport (top or bottom),
+     they progressively blur and fade out.
+     exitZone: how many px of the image must have left the
+     viewport before full blur kicks in.
   ──────────────────────────────────────────────────── */
-  function boomerang(video) {
-    // Wait until we know the duration
-    function init() {
-      if (!video.duration || isNaN(video.duration)) {
-        video.addEventListener('loadedmetadata', init, { once: true });
-        return;
-      }
+  const galleryImgs = document.querySelectorAll('.gallery-img-wrap img');
+  const MAX_BLUR    = 14;   // px — max blur at fully-exited edge
+  const EXIT_ZONE   = 0.35; // fraction of image height used as fade zone
 
-      let goingForward = true;
-      let lastTimestamp  = null;
-      let rafId;
+  function updateGalleryBlur() {
+    galleryImgs.forEach(img => {
+      const rect     = img.getBoundingClientRect();
+      const vh       = window.innerHeight;
+      const zone     = rect.height * EXIT_ZONE;
 
-      // Kick off forward playback
-      video.currentTime = 0;
-      video.play().catch(() => {});
+      // How far the image has exited at the top (positive = exiting upward)
+      const exitTop  = Math.max(0, -rect.bottom + zone);
+      // How far the image has exited at the bottom (positive = exiting downward)
+      const exitBot  = Math.max(0, rect.top - vh + zone);
 
-      // When forward play ends → switch to reverse rAF loop
-      video.addEventListener('ended', () => {
-        goingForward = false;
-        video.pause();
-        lastTimestamp = null;
-        rafId = requestAnimationFrame(reverseStep);
-      });
+      // Pick whichever exit is happening
+      const exit     = Math.max(exitTop, exitBot);
+      // Normalise 0–1 over the exit zone
+      const t        = Math.min(exit / zone, 1);
 
-      function reverseStep(timestamp) {
-        if (lastTimestamp === null) lastTimestamp = timestamp;
-        const delta = (timestamp - lastTimestamp) / 1000; // seconds elapsed
-        lastTimestamp = timestamp;
+      const blur     = t * MAX_BLUR;
+      const opacity  = 1 - t * 0.45;   // fade to 55% opacity at full exit
 
-        video.currentTime = Math.max(0, video.currentTime - delta);
-
-        if (video.currentTime <= 0) {
-          // Hit the start → switch back to forward
-          goingForward = true;
-          cancelAnimationFrame(rafId);
-          video.play().catch(() => {});
-          return;
-        }
-        rafId = requestAnimationFrame(reverseStep);
-      }
-    }
-
-    init();
+      img.style.filter  = `blur(${blur.toFixed(1)}px)`;
+      img.style.opacity = opacity.toFixed(3);
+    });
   }
 
-  // Apply to both hero videos (only the visible one renders)
-  document.querySelectorAll('.hero-video').forEach(boomerang);
+  window.addEventListener('scroll', updateGalleryBlur, { passive: true });
+  updateGalleryBlur();
   </script>
 
 </body>

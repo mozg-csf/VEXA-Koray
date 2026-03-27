@@ -9,9 +9,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
-
-    body {
+    html, body {
       background: #fff;
       color: #111;
       font-family: 'Inter', sans-serif;
@@ -51,39 +49,28 @@
     }
 
     /* ── PAINTING SLIDES ── */
-    /* Each slide is 100vh, image fills it with parallax */
+    /* Seamless: no margin, no gap, no border between slides */
+    .paintings-stack {
+      padding-top: 44px; /* push entire stack below fixed nav */
+    }
+
     .painting-slide {
       position: relative;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* First slide gets top padding for nav */
-    .painting-slide:first-of-type {
-      margin-top: 44px;
-    }
-
-    .painting-slide .parallax-img {
-      position: absolute;
-      inset: -15% 0;          /* overscan so parallax has room */
       width: 100%;
-      height: 130%;
-      object-fit: contain;    /* show full painting */
+      height: 100vh;
+      overflow: hidden;       /* crop — this is the parallax crop container */
+    }
+
+    /* The image is taller than 100vh so it has room to move */
+    .painting-slide img {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 130%;           /* 30% extra = 15% headroom above + below */
+      top: -15%;              /* start centred */
+      object-fit: cover;      /* fill the slide — crop parallax inside */
       object-position: center;
       will-change: transform;
-    }
-
-    /* Thin divider between slides */
-    .painting-slide + .painting-slide::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 10%; right: 10%;
-      height: 1px;
-      background: #e8e8e8;
-      z-index: 2;
     }
 
     /* ── FOOTER ── */
@@ -100,14 +87,6 @@
 
     footer a { color: #888; text-decoration: none; }
     footer a:hover { color: #111; }
-
-    @media (max-width: 768px) {
-      .painting-slide .parallax-img {
-        object-fit: contain;
-        inset: -10% 0;
-        height: 120%;
-      }
-    }
   </style>
 </head>
 <body>
@@ -117,11 +96,13 @@
     <a href="index.html">← Back</a>
   </nav>
 
-  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03032.JPG"  alt="Painting by Koray Karagözler"></div>
-  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03033.JPG"  alt="Painting by Koray Karagözler"></div>
-  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03046.JPG"  alt="Painting by Koray Karagözler"></div>
-  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/IMG_0838.jpg"  alt="Painting by Koray Karagözler"></div>
-  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/IMG_0839.jpg"  alt="Painting by Koray Karagözler"></div>
+  <div class="paintings-stack">
+    <div class="painting-slide"><img src="paintings%20Koray/DSC03032.JPG"  alt="Painting by Koray Karagözler"></div>
+    <div class="painting-slide"><img src="paintings%20Koray/DSC03033.JPG"  alt="Painting by Koray Karagözler"></div>
+    <div class="painting-slide"><img src="paintings%20Koray/DSC03046.JPG"  alt="Painting by Koray Karagözler"></div>
+    <div class="painting-slide"><img src="paintings%20Koray/IMG_0838.jpg"  alt="Painting by Koray Karagözler"></div>
+    <div class="painting-slide"><img src="paintings%20Koray/IMG_0839.jpg"  alt="Painting by Koray Karagözler"></div>
+  </div>
 
   <footer>
     <span>© 2025 Koray Karagözler</span>
@@ -129,26 +110,29 @@
   </footer>
 
   <script>
-    // Parallax: shift each image slightly on scroll
+    /* ── CROP PARALLAX ────────────────────────────────────
+       Image is 140% tall inside a 100vh overflow:hidden wrap.
+       As the slide scrolls through the viewport, the image
+       is shifted so the centre of the slide always shows the
+       centre of the image — creating a smooth crop parallax.
+    ──────────────────────────────────────────────────────── */
     const slides = document.querySelectorAll('.painting-slide');
 
     function applyParallax() {
-      const scrollY = window.scrollY;
-
       slides.forEach(slide => {
-        const img   = slide.querySelector('.parallax-img');
-        const rect  = slide.getBoundingClientRect();
-        // How far through this slide are we? (-1 above → 0 centre → 1 below)
+        const img    = slide.querySelector('img');
+        const rect   = slide.getBoundingClientRect();
+        // progress: -1 (above) → 0 (centred in viewport) → +1 (below)
         const progress = (rect.top + rect.height / 2 - window.innerHeight / 2)
                          / window.innerHeight;
-        // Shift ±8% of the slide height
-        const shift = progress * 8;
+        // Shift within the 30% extra height (±15% of slide height)
+        const shift = progress * 15;
         img.style.transform = `translateY(${shift}%)`;
       });
     }
 
     window.addEventListener('scroll', applyParallax, { passive: true });
-    applyParallax(); // init
+    applyParallax();
   </script>
 
 </body>
