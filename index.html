@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koray Karagozler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #fff;
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAVIGATION ──────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3vw;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
+    }
+
+    nav.nav-hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      filter: blur(5px);
+    }
+
+    .nav-logo {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #d94f3d;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #111;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #d94f3d; }
+
+    .nav-links li + li::before {
+      content: '/';
+      margin-right: 2.5rem;
+      color: #bbb;
+      font-size: 0.6rem;
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      padding-left: 5vw;
+      padding-right: 5vw;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Background video */
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    /* Show desktop / hide mobile by default */
+    .hero-video-mobile  { display: none; }
+    .hero-video-desktop { display: block; }
+
+    /* Subtle overlay to keep text legible */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.25);
+      z-index: 1;
+    }
+
+    .hero-text-img {
+      position: relative;
+      z-index: 2;
+      width: 70%;
+      max-width: 760px;
+      height: auto;
+      display: block;
+      mix-blend-mode: multiply;
+    }
+
+    /* ── ABOUT + GALLERY ─────────────────────────────── */
+    .content-section {
+      display: flex;
+      align-items: flex-start;
+      border-top: 1px solid #ebebeb;
+    }
+
+    .about-panel {
+      position: sticky;
+      top: 44px;
+      width: 36%;
+      height: calc(100vh - 44px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 5vw;
+      flex-shrink: 0;
+      border-right: 1px solid #ebebeb;
+    }
+
+    .about-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 1.4rem;
+    }
+
+    .about-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .about-panel p {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: #333;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-book {
+      display: inline-block;
+      padding: 0.7rem 1.6rem;
+      border: 1px solid #111;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #111;
+      align-self: flex-start;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-book:hover {
+      background: #111;
+      color: #fff;
+    }
+
+    .gallery-panel {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .gallery-panel img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    /* ── BOTTOM NAV CARDS ────────────────────────────── */
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid #ebebeb;
+    }
+
+    .nav-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: #111;
+      border-right: 1px solid #ebebeb;
+      padding: 2.4rem 2.2rem 2rem;
+      min-height: 160px;
+      transition: background 0.2s;
+    }
+
+    .nav-card:last-child { border-right: none; }
+
+    .nav-card:hover { background: #f8f8f8; }
+
+    .nav-card-label {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-card-arrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-top: 2rem;
+      transition: color 0.2s;
+    }
+
+    .nav-card:hover .nav-card-arrow { color: #111; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid #ebebeb;
+      padding: 2rem 4vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-copy {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: #999;
+      text-transform: uppercase;
+    }
+
+    /* ── BURGER / FLOAT (desktop: hidden) ────────────── */
+    .burger-btn  { display: none; }
+    .mobile-menu { display: none; }
+
+    /* Float book: on desktop always hidden;
+       on mobile visibility is controlled by JS via .float-visible */
+    .float-book {
+      display: none;
+    }
+
+    /* ════════════════════════════════════════════════════
+       MOBILE  ≤ 768px
+    ════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* ── Nav: hide links, show burger ── */
+      .nav-links { display: none; }
+
+      .burger-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        z-index: 200;
+      }
+
+      .burger-btn span {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: #111;
+        transition: all 0.25s ease;
+        transform-origin: center;
+      }
+
+      .burger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+      .burger-btn.open span:nth-child(2) { opacity: 0; }
+      .burger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+      /* ── Mobile menu overlay ── */
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        z-index: 150;
+        padding: 6rem 2rem 4rem;
+        gap: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .mobile-menu.open { transform: translateX(0); }
+
+      .mobile-menu a {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 400;
+        text-decoration: none;
+        color: #111;
+        letter-spacing: -0.01em;
+      }
+
+      .mobile-menu a:hover { color: #d94f3d; }
+
+      /* ── Hero: full screen, swap videos ── */
+      .hero-video-desktop { display: none; }
+      .hero-video-mobile  { display: block; }
+      .hero-text-img { width: 90%; }
+
+      /* ── Content section: single column, gallery first ── */
+      .content-section { flex-direction: column; }
+
+      .gallery-panel { order: 1; width: 100%; }
+
+      .about-panel {
+        order: 2;
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-top: 1px solid #ebebeb;
+        padding: 3rem 6vw 4rem;
+        justify-content: flex-start;
+      }
+
+      .about-panel h2 { font-size: 2rem; }
+
+      /* ── Nav cards: stack vertically ── */
+      .nav-cards { grid-template-columns: 1fr; }
+
+      .nav-card {
+        border-right: none;
+        border-bottom: 1px solid #ebebeb;
+        min-height: 100px;
+        padding: 1.6rem 6vw;
+      }
+
+      .nav-card:last-child { border-bottom: none; }
+      .nav-card-label { font-size: 1.8rem; }
+      .nav-card-arrow { margin-top: 0.75rem; }
+
+      /* ── Floating Book button: controlled by JS ── */
+      .float-book {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 120;
+        padding: 0.85rem 2.2rem;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(30, 30, 30, 0.18);
+        border-radius: 0;
+        color: #2b2b2b;
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        /* hidden by default; JS adds .float-visible */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease, background 0.2s;
+      }
+
+      .float-book.float-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .float-book:hover { background: rgba(255, 255, 255, 0.82); }
+
+      /* Hide inline booking button on mobile */
+      .btn-book { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVIGATION ── -->
+  <nav id="mainNav">
+    <a class="nav-logo" href="index.html">Koray Karagozler</a>
+    <ul class="nav-links">
+      <li><a href="booking.html">Booking</a></li>
+      <li><a href="#">Available Designs</a></li>
+      <li><a href="aftercare.html">Aftercare</a></li>
+      <li><a href="paintings.html">Paintings</a></li>
+    </ul>
+    <button class="burger-btn" id="burgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── MOBILE MENU ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="booking.html"    onclick="closeMenu()">Booking</a>
+    <a href="#"               onclick="closeMenu()">Available Designs</a>
+    <a href="aftercare.html"  onclick="closeMenu()">Aftercare</a>
+    <a href="paintings.html"  onclick="closeMenu()">Paintings</a>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="heroSection">
+
+    <!-- Desktop background video -->
+    <video class="hero-video hero-video-desktop"
+           autoplay muted playsinline preload="auto">
+      <source src="background%20videos%20/desktop%20background.mov" type="video/mp4">
+    </video>
+
+    <!-- Mobile background video -->
+    <video class="hero-video hero-video-mobile"
+           autoplay muted playsinline preload="auto">
+      <source src="background%20videos%20/mobile%20background%20.mov" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <img
+      class="hero-text-img"
+      src="hero%20text%20.png"
+      alt="Koray Karagozler">
+
+  </section>
+
+  <!-- ── ABOUT + GALLERY ── -->
+  <section class="content-section" id="contentSection">
+
+    <div class="about-panel" id="aboutPanel">
+      <span class="about-label">About</span>
+      <h2>Meet Koray&nbsp;<br>Karagozler</h2>
+      <p>
+        I'm a painter and abstract tattoo artist based in Berlin.
+        I love creating designs that follow the natural flow of the
+        body, blending organic shapes with watercolor and ink-bleed
+        techniques. Every tattoo I make is meant to move with you,
+        embracing the imperfections and fluidity of both ink and skin.
+        My work is all about capturing movement, emotion, and
+        individuality so each piece is truly one of a kind.
+      </p>
+      <a class="btn-book" href="booking.html">Book Appointment</a>
+    </div>
+
+    <div class="gallery-panel">
+      <img src="web%20site%20photos/473590632_18484678195014406_2227711004829964132_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/240773660_276624683895629_2709360365824284851_n.jpg"   alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/475408871_18491134456014406_2759109246159602391_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/468698309_18475885324014406_5212714903349388167_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/470901844_18480577300014406_5284360698326742336_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/473265367_18484521844014406_7776849205039384392_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/472312608_18482713894014406_284966381724391033_n.jpg"  alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/480036512_18491134441014406_8892136477124551321_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/548106514_18531062476014406_8057584508707428130_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/240603908_240267854656001_7226878660462093272_n.jpg"   alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/500906300_18509519419014406_3049804120803054168_n.jpg" alt="Tattoo by Koray Karagozler">
+      <img src="web%20site%20photos/602998689_18551070835014406_6667830351945043272_n.jpg" alt="Tattoo by Koray Karagozler">
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV CARDS ── -->
+  <div class="nav-cards" id="navCards">
+
+    <a class="nav-card" href="aftercare.html">
+      <div class="nav-card-label">Aftercare</div>
+      <div class="nav-card-arrow">View →</div>
+    </a>
+
+    <a class="nav-card" href="paintings.html">
+      <div class="nav-card-label">Paintings</div>
+      <div class="nav-card-arrow">View →</div>
+    </a>
+
+    <a class="nav-card" href="booking.html">
+      <div class="nav-card-label">Booking</div>
+      <div class="nav-card-arrow">Get in touch →</div>
+    </a>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-name">Koray Karagozler</div>
+    <div class="footer-copy">© 2024 Artist Profile. All Rights Reserved.</div>
+  </footer>
+
+  <!-- ── FLOATING BOOK BUTTON (mobile only, JS-controlled) ── -->
+  <a class="float-book" id="floatBook" href="booking.html">Book Appointment</a>
+
+  <script>
+    /* ── Burger menu ─────────────────────────── */
+    const burgerBtn  = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function closeMenu() {
+      burgerBtn.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    burgerBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      burgerBtn.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    mobileMenu.addEventListener('click', e => {
+      if (e.target === mobileMenu) closeMenu();
+    });
+
+    /* ── Nav hide on scroll-down / show on scroll-up ── */
+    const mainNav        = document.getElementById('mainNav');
+    const floatBook      = document.getElementById('floatBook');
+    const contentSection = document.getElementById('contentSection');
+    const aboutPanel     = document.getElementById('aboutPanel');
+    const navCards       = document.getElementById('navCards');
+
+    let lastScrollY  = window.scrollY;
+    let ticking      = false;
+
+    function onScroll() {
+      const currentY = window.scrollY;
+      const delta    = currentY - lastScrollY;
+
+      /* Nav direction logic — ignore tiny jitter */
+      if (Math.abs(delta) > 3) {
+        if (delta > 0 && currentY > 80) {
+          mainNav.classList.add('nav-hidden');
+        } else {
+          mainNav.classList.remove('nav-hidden');
+        }
+        lastScrollY = currentY;
+      }
+
+      /* Floating button: visible while gallery is scrolling;
+         hides once the Meet-the-Artist panel comes into view */
+      if (floatBook && window.innerWidth <= 768) {
+        const contentTop   = contentSection.offsetTop;
+        const aboutTop     = aboutPanel.offsetTop;   // top of Meet-the-Artist
+        // Show only between the start of the content section
+        // and the moment the about panel reaches the bottom of the viewport
+        const inGallery    = currentY + window.innerHeight > contentTop
+                          && currentY + window.innerHeight <= aboutTop;
+
+        floatBook.classList.toggle('float-visible', inGallery);
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+
+  /* ── BOOMERANG VIDEO ─────────────────────────────────
+     Plays forward → reaches end → plays in reverse →
+     reaches start → plays forward again, endlessly.
+  ──────────────────────────────────────────────────── */
+  function boomerang(video) {
+    // Wait until we know the duration
+    function init() {
+      if (!video.duration || isNaN(video.duration)) {
+        video.addEventListener('loadedmetadata', init, { once: true });
+        return;
+      }
+
+      let goingForward = true;
+      let lastTimestamp  = null;
+      let rafId;
+
+      // Kick off forward playback
+      video.currentTime = 0;
+      video.play().catch(() => {});
+
+      // When forward play ends → switch to reverse rAF loop
+      video.addEventListener('ended', () => {
+        goingForward = false;
+        video.pause();
+        lastTimestamp = null;
+        rafId = requestAnimationFrame(reverseStep);
+      });
+
+      function reverseStep(timestamp) {
+        if (lastTimestamp === null) lastTimestamp = timestamp;
+        const delta = (timestamp - lastTimestamp) / 1000; // seconds elapsed
+        lastTimestamp = timestamp;
+
+        video.currentTime = Math.max(0, video.currentTime - delta);
+
+        if (video.currentTime <= 0) {
+          // Hit the start → switch back to forward
+          goingForward = true;
+          cancelAnimationFrame(rafId);
+          video.play().catch(() => {});
+          return;
+        }
+        rafId = requestAnimationFrame(reverseStep);
+      }
+    }
+
+    init();
+  }
+
+  // Apply to both hero videos (only the visible one renders)
+  document.querySelectorAll('.hero-video').forEach(boomerang);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>After Care — Koray Karagözler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #fff;
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      padding: 1.5rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    nav .site-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      padding: 5rem 6vw 3rem;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .page-header p {
+      margin-top: 1.25rem;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #555;
+      max-width: 560px;
+    }
+
+    /* ── CONTENT ── */
+    .aftercare-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 6vw 6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 5rem;
+    }
+
+    .aftercare-content section {
+      margin-bottom: 3rem;
+    }
+
+    .aftercare-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .aftercare-content p,
+    .aftercare-content li {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .aftercare-content ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .aftercare-content ul li {
+      padding-left: 1rem;
+      position: relative;
+      margin-bottom: 0.4rem;
+    }
+
+    .aftercare-content ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: #bbb;
+    }
+
+    .intro-note {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── PDF DOWNLOAD ── */
+    .pdf-download {
+      margin: 0 6vw 4rem;
+      padding: 2rem;
+      border: 1px solid #e8e8e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+    }
+
+    .pdf-download p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .pdf-download strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #111;
+      margin-bottom: 0.25rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border: 1px solid #111;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #111;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn:hover {
+      background: #111;
+      color: #fff;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4vw;
+      border-top: 1px solid #e8e8e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: #888;
+    }
+
+    footer a {
+      color: #888;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #111;
+    }
+
+    @media (max-width: 680px) {
+      .aftercare-content {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="site-name" href="index.html">Koray Karagözler</a>
+    <a href="index.html">← Back</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>Tattoo<br>After Care</h1>
+    <p>Care for your new tattoo with patience and gentleness.
+       Always wash your hands before touching your tattoo.</p>
+  </div>
+
+  <div class="aftercare-content">
+
+    <!-- Left column -->
+    <div>
+      <section>
+        <h2>First Day</h2>
+        <ul>
+          <li>At the end of your session a protective second skin film will be applied.</li>
+          <li>Please keep this film on for three days unless it starts to peel off naturally.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Cleaning Your Tattoo<br><em style="font-style:italic;font-size:0.9em;color:#888">After Three Days</em></h2>
+        <ul>
+          <li>Carefully remove the second skin.</li>
+          <li>Wash your hands with warm water.</li>
+          <li>Gently clean the tattoo using warm water and unscented antibacterial soap. This can be done once or twice per day.</li>
+          <li>Pat the area dry with a clean paper towel and allow it to air dry for a few minutes.</li>
+          <li>Apply a light mist of antiseptic spray and wait until it is fully absorbed. This step can be repeated twice per day.</li>
+          <li>Once absorbed, apply a very thin layer of your aftercare cream. Do not apply too much product. This can be done two or three times per day.</li>
+          <li>Repeat this daily routine for ten days.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Moisturizing After the First Ten Days</h2>
+        <p class="intro-note">Keep the tattooed area slightly moisturized at all times. Apply a small amount of the provided aftercare cream two or three times per day for up to five weeks.</p>
+        <p>Avoid regular body lotions, oils, or sunscreens during this period.</p>
+      </section>
+    </div>
+
+    <!-- Right column -->
+    <div>
+      <section>
+        <h2>General Rules</h2>
+        <ul>
+          <li>Avoid sun exposure for at least six weeks.</li>
+          <li>Avoid swimming, hot tubs, or saunas for three weeks.</li>
+          <li>Do not shave the tattooed area until it is fully healed, which may take four to five weeks.</li>
+          <li>Do not pick, peel, or scratch any scabs or flakes.</li>
+          <li>Avoid intense physical activity or heavy sweating for the first ten days.</li>
+          <li>Wear loose, clean clothing to reduce friction and irritation.</li>
+          <li>After healing, always protect your tattoo from the sun.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Healing Process Photos</h2>
+        <ul>
+          <li>Please send two sets of clear photos — both close up and from a distance.</li>
+          <li>One set should be taken one week after the session and the second six weeks after the session.</li>
+          <li>This helps your artist follow the healing progress.</li>
+        </ul>
+      </section>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2025 Koray Karagözler</span>
+    <a href="https://www.instagram.com/koray.karagozler/" target="_blank" rel="noopener">Instagram</a>
+  </footer>
+
+</body>
+</html>
