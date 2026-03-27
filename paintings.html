@@ -7,11 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: #fff;
@@ -19,117 +17,73 @@
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ── NAV ── */
     nav {
-      padding: 1.5rem 6vw;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e8e8e8;
+      padding: 0 3vw;
+      height: 44px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     nav a {
       text-decoration: none;
       color: #111;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     nav .site-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       letter-spacing: 0.02em;
       text-transform: none;
     }
 
-    /* ── HEADER ── */
-    .page-header {
-      padding: 5rem 6vw 4rem;
-      border-bottom: 1px solid #e8e8e8;
-    }
-
-    .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-
-    .page-header p {
-      margin-top: 1.25rem;
-      font-size: 1rem;
-      line-height: 1.7;
-      color: #555;
-      max-width: 560px;
-    }
-
-    /* ── PAINTINGS GRID ── */
-    .paintings-grid {
-      padding: 4rem 6vw 6rem;
-      columns: 2;
-      column-gap: 2rem;
-    }
-
-    .painting-item {
-      break-inside: avoid;
-      margin-bottom: 2rem;
-      overflow: hidden;
-      cursor: zoom-in;
-    }
-
-    .painting-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-
-    .painting-item:hover img {
-      transform: scale(1.02);
-    }
-
-    /* ── LIGHTBOX ── */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      z-index: 1000;
+    /* ── PAINTING SLIDES ── */
+    /* Each slide is 100vh, image fills it with parallax */
+    .painting-slide {
+      position: relative;
+      height: 100vh;
+      display: flex;
       align-items: center;
       justify-content: center;
-      cursor: zoom-out;
+      overflow: hidden;
     }
 
-    .lightbox.active {
-      display: flex;
+    /* First slide gets top padding for nav */
+    .painting-slide:first-of-type {
+      margin-top: 44px;
     }
 
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-    }
-
-    .lightbox-close {
+    .painting-slide .parallax-img {
       position: absolute;
-      top: 1.5rem;
-      right: 2rem;
-      color: #fff;
-      font-size: 2rem;
-      cursor: pointer;
-      line-height: 1;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-      background: none;
-      border: none;
+      inset: -15% 0;          /* overscan so parallax has room */
+      width: 100%;
+      height: 130%;
+      object-fit: contain;    /* show full painting */
+      object-position: center;
+      will-change: transform;
     }
 
-    .lightbox-close:hover {
-      opacity: 1;
+    /* Thin divider between slides */
+    .painting-slide + .painting-slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: #e8e8e8;
+      z-index: 2;
     }
 
     /* ── FOOTER ── */
@@ -144,18 +98,14 @@
       color: #888;
     }
 
-    footer a {
-      color: #888;
-      text-decoration: none;
-    }
+    footer a { color: #888; text-decoration: none; }
+    footer a:hover { color: #111; }
 
-    footer a:hover {
-      color: #111;
-    }
-
-    @media (max-width: 600px) {
-      .paintings-grid {
-        columns: 1;
+    @media (max-width: 768px) {
+      .painting-slide .parallax-img {
+        object-fit: contain;
+        inset: -10% 0;
+        height: 120%;
       }
     }
   </style>
@@ -167,35 +117,11 @@
     <a href="index.html">← Back</a>
   </nav>
 
-  <div class="page-header">
-    <h1>Paintings</h1>
-    <p>Works on canvas and paper — the studio practice that informs
-       everything made on skin.</p>
-  </div>
-
-  <div class="paintings-grid">
-    <div class="painting-item" onclick="openLightbox(this)">
-      <img src="paintings%20Koray/DSC03032.JPG" alt="Painting by Koray Karagözler">
-    </div>
-    <div class="painting-item" onclick="openLightbox(this)">
-      <img src="paintings%20Koray/DSC03033.JPG" alt="Painting by Koray Karagözler">
-    </div>
-    <div class="painting-item" onclick="openLightbox(this)">
-      <img src="paintings%20Koray/DSC03046.JPG" alt="Painting by Koray Karagözler">
-    </div>
-    <div class="painting-item" onclick="openLightbox(this)">
-      <img src="paintings%20Koray/IMG_0838.jpg" alt="Painting by Koray Karagözler">
-    </div>
-    <div class="painting-item" onclick="openLightbox(this)">
-      <img src="paintings%20Koray/IMG_0839.jpg" alt="Painting by Koray Karagözler">
-    </div>
-  </div>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <img id="lightbox-img" src="" alt="">
-  </div>
+  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03032.JPG"  alt="Painting by Koray Karagözler"></div>
+  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03033.JPG"  alt="Painting by Koray Karagözler"></div>
+  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/DSC03046.JPG"  alt="Painting by Koray Karagözler"></div>
+  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/IMG_0838.jpg"  alt="Painting by Koray Karagözler"></div>
+  <div class="painting-slide"><img class="parallax-img" src="paintings%20Koray/IMG_0839.jpg"  alt="Painting by Koray Karagözler"></div>
 
   <footer>
     <span>© 2025 Koray Karagözler</span>
@@ -203,17 +129,26 @@
   </footer>
 
   <script>
-    function openLightbox(el) {
-      const src = el.querySelector('img').src;
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox').classList.add('active');
+    // Parallax: shift each image slightly on scroll
+    const slides = document.querySelectorAll('.painting-slide');
+
+    function applyParallax() {
+      const scrollY = window.scrollY;
+
+      slides.forEach(slide => {
+        const img   = slide.querySelector('.parallax-img');
+        const rect  = slide.getBoundingClientRect();
+        // How far through this slide are we? (-1 above → 0 centre → 1 below)
+        const progress = (rect.top + rect.height / 2 - window.innerHeight / 2)
+                         / window.innerHeight;
+        // Shift ±8% of the slide height
+        const shift = progress * 8;
+        img.style.transform = `translateY(${shift}%)`;
+      });
     }
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeLightbox();
-    });
+
+    window.addEventListener('scroll', applyParallax, { passive: true });
+    applyParallax(); // init
   </script>
 
 </body>
