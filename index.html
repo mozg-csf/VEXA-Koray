@@ -99,7 +99,16 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center center; /* desktop default */
       z-index: 0;
+      pointer-events: none; /* never show native controls */
+    }
+
+    @media (max-width: 768px) {
+      .hero-video {
+        /* Crop the top ~30% on mobile — shifts view to lower portion */
+        object-position: center 70%;
+      }
     }
 
     /* Show desktop / hide mobile by default */
@@ -208,17 +217,19 @@
       min-width: 0;
     }
 
-    /* Blur-on-exit wrapper */
+    /* Scale-up parallax — overflow:hidden clips the growing image */
     .gallery-img-wrap {
       position: relative;
+      overflow: hidden;
     }
 
     .gallery-panel .gallery-img-wrap img {
       width: 100%;
       height: auto;
       display: block;
-      will-change: filter, opacity;
-      transition: filter 0.1s linear, opacity 0.1s linear;
+      will-change: transform;
+      transform-origin: center center;
+      transform: scale(1);
     }
 
     /* ── BOTTOM NAV CARDS ────────────────────────────── */
@@ -472,7 +483,7 @@
 
     <!-- Mobile background video -->
     <video class="hero-video hero-video-mobile"
-           autoplay muted loop playsinline preload="auto">
+           autoplay muted loop playsinline webkit-playsinline preload="auto">
       <source src="bg-videos/mobile.mp4" type="video/mp4">
     </video>
 
@@ -617,43 +628,41 @@
       }
     }, { passive: true });
 
-  /* ── GALLERY BLUR-ON-EXIT ────────────────────────────
-     Images are fully sharp while in view.
-     As they scroll OUT of the viewport (top or bottom),
-     they progressively blur and fade out.
-     exitZone: how many px of the image must have left the
-     viewport before full blur kicks in.
+  /* ── GALLERY SCALE PARALLAX ─────────────────────────
+     As each image scrolls upward through the viewport it
+     gently scales from 1 → 1.13.  overflow:hidden on the
+     wrapper clips the growth so no layout shifts occur —
+     smooth, continuous, no gaps between images.
   ──────────────────────────────────────────────────── */
   const galleryImgs = document.querySelectorAll('.gallery-img-wrap img');
-  const MAX_BLUR    = 14;   // px — max blur at fully-exited edge
-  const EXIT_ZONE   = 0.35; // fraction of image height used as fade zone
 
-  function updateGalleryBlur() {
+  function updateGalleryScale() {
+    const vh = window.innerHeight;
     galleryImgs.forEach(img => {
       const rect     = img.getBoundingClientRect();
-      const vh       = window.innerHeight;
-      const zone     = rect.height * EXIT_ZONE;
-
-      // How far the image has exited at the top (positive = exiting upward)
-      const exitTop  = Math.max(0, -rect.bottom + zone);
-      // How far the image has exited at the bottom (positive = exiting downward)
-      const exitBot  = Math.max(0, rect.top - vh + zone);
-
-      // Pick whichever exit is happening
-      const exit     = Math.max(exitTop, exitBot);
-      // Normalise 0–1 over the exit zone
-      const t        = Math.min(exit / zone, 1);
-
-      const blur     = t * MAX_BLUR;
-      const opacity  = 1 - t * 0.45;   // fade to 55% opacity at full exit
-
-      img.style.filter  = `blur(${blur.toFixed(1)}px)`;
-      img.style.opacity = opacity.toFixed(3);
+      const centerY  = rect.top + rect.height / 2;
+      // 0 = image centre at viewport bottom, 1 = image centre at viewport top
+      const progress = 1 - centerY / vh;
+      const t        = Math.max(0, Math.min(1, progress));
+      const scale    = 1 + t * 0.13;        // 1.00 → 1.13
+      img.style.transform = `scale(${scale.toFixed(4)})`;
     });
   }
 
-  window.addEventListener('scroll', updateGalleryBlur, { passive: true });
-  updateGalleryBlur();
+  window.addEventListener('scroll', updateGalleryScale, { passive: true });
+  updateGalleryScale();
+
+  /* ── iOS VIDEO FORCE-PLAY ────────────────────────────
+     iOS Safari ignores autoplay on large files until the
+     user taps; this nudge fires as early as possible.
+  ──────────────────────────────────────────────────── */
+  document.querySelectorAll('.hero-video').forEach(v => {
+    v.muted = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    // Also attempt on first user touch (iOS low-power mode fallback)
+    document.addEventListener('touchstart', tryPlay, { once: true });
+  });
   </script>
 
 </body>
