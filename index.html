@@ -83,7 +83,9 @@
 
     /* ── HERO ────────────────────────────────────────── */
     .hero {
-      position: relative;
+      position: sticky;   /* stays in place while content slides over */
+      top: 0;
+      z-index: 1;
       height: 100vh;
       padding-left: 5vw;
       padding-right: 5vw;
@@ -150,6 +152,9 @@
 
     /* ── ABOUT + GALLERY ─────────────────────────────── */
     .content-section {
+      position: relative;
+      z-index: 2;           /* slides over the sticky hero */
+      background: #fff;
       display: flex;
       align-items: flex-start;
       border-top: 1px solid #ebebeb;
@@ -234,6 +239,9 @@
 
     /* ── BOTTOM NAV CARDS ────────────────────────────── */
     .nav-cards {
+      position: relative;
+      z-index: 2;           /* stays above hero with content */
+      background: #fff;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       border-top: 1px solid #ebebeb;
