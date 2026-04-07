@@ -97,10 +97,14 @@
 
     .form-wrapper iframe {
       width: 100%;
-      height: 2500px;   /* tall enough to show full form; JS resizes via postMessage */
+      height: calc(100vh - 160px); /* fills viewport below nav + header */
+      min-height: 600px;
       border: none;
       display: block;
       background: #fff;
+      /* overscroll-behavior on the iframe element lets scroll chain
+         to the parent page once the form's bottom is reached */
+      overscroll-behavior: auto;
     }
 
     /* Fallback message if iframe blocked */
@@ -180,7 +184,6 @@
       src="https://www.cognitoforms.com/KorayKaragozler1/TATTOOSUBMISSIONFORM"
       allow="payment"
       allowtransparency="true"
-      scrolling="no"
       title="Tattoo Submission Form">
     </iframe>
   </div>
