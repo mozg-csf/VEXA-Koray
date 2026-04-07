@@ -155,12 +155,6 @@
       .hero-text-img {
         width: 56%;
         max-width: 960px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero {
-        justify-content: center;
       }
     }
 
@@ -208,6 +202,10 @@
       font-size: 0.88rem;
       line-height: 1.8;
       color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .about-panel p:last-of-type {
       margin-bottom: 2.5rem;
     }
 
@@ -404,6 +402,22 @@
 
       .mobile-menu.open { transform: translateX(0); }
 
+      .menu-close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        line-height: 1;
+        cursor: pointer;
+        color: #111;
+        padding: 0.2rem 0.5rem;
+        transition: color 0.2s;
+      }
+
+      .menu-close-btn:hover { color: #d94f3d; }
+
       .mobile-menu a {
         font-family: 'Playfair Display', serif;
         font-size: 2rem;
@@ -512,6 +526,7 @@
 
   <!-- ── MOBILE MENU ── -->
   <div class="mobile-menu" id="mobileMenu">
+    <button class="menu-close-btn" onclick="closeMenu()" aria-label="Close menu">×</button>
     <a href="booking.html"    onclick="closeMenu()">Contact</a>
     <a href="aftercare.html"  onclick="closeMenu()">Aftercare</a>
     <a href="paintings.html"  onclick="closeMenu()">Paintings</a>
@@ -548,13 +563,19 @@
       <span class="about-label">About</span>
       <h2>Meet Koray&nbsp;<br>Karagozler</h2>
       <p>
-        I'm a painter and abstract tattoo artist based in Berlin.
-        I love creating designs that follow the natural flow of the
-        body, blending organic shapes with watercolor and ink-bleed
-        techniques. Every tattoo I make is meant to move with you,
-        embracing the imperfections and fluidity of both ink and skin.
-        My work is all about capturing movement, emotion, and
-        individuality so each piece is truly one of a kind.
+        I'm an abstract tattoo artist and painter based in Berlin.
+        With a background in sculpture, my work explores the relationship
+        between form, texture, and the human body. I use anatomy as a guide
+        to place abstract elements in a balanced and natural way.
+      </p>
+      <p>
+        My design process usually begins with painting; I combine watercolor,
+        acrylic, ink, charcoal, and markers to create layered and organic
+        compositions. These visual studies then evolve into tattoos that
+        integrate naturally with the body.
+      </p>
+      <p>
+        My focus is on creating intuitive, expressive, and individual pieces.
       </p>
       <div class="about-cta">
         <a class="btn-book" href="booking.html">Book Appointment</a>

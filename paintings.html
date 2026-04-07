@@ -179,58 +179,55 @@
       pointer-events: all;
     }
 
+    /* Single-column scrollable panel */
     .overlay-inner {
       display: flex;
+      flex-direction: column;
       width: 100%;
-      max-width: 1080px;
+      max-width: 680px;
       max-height: 92vh;
       background: #fff;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     /* Close button */
     .overlay-close {
-      position: absolute;
-      top: 0.9rem;
-      right: 1rem;
-      background: none;
+      position: sticky;
+      top: 0;
+      align-self: flex-end;
+      background: #fff;
       border: none;
       cursor: pointer;
       font-size: 1.4rem;
       line-height: 1;
       color: #111;
       z-index: 10;
-      padding: 0.2rem 0.4rem;
+      padding: 0.9rem 1rem 0.4rem;
       transition: color 0.2s;
     }
 
     .overlay-close:hover { color: #d94f3d; }
 
-    /* Left — image viewer */
+    /* Image viewer */
     .overlay-gallery {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
       background: #f6f6f6;
-      padding: 2.5rem 2rem 2rem;
-      overflow-y: auto;
-      min-width: 0;
+      padding: 0 0 1.5rem;
     }
 
     .overlay-main-img {
       width: 100%;
       height: auto;
-      max-height: 58vh;
+      max-height: 60vh;
       object-fit: contain;
       display: block;
     }
 
-    /* Thumbnail strip — visible once extras are added */
+    /* Thumbnail strip */
     .overlay-thumbs {
       display: flex;
       gap: 0.55rem;
-      margin-top: 1.2rem;
+      padding: 1rem 1.5rem 0;
       flex-wrap: wrap;
     }
 
@@ -250,30 +247,48 @@
       border-color: #111;
     }
 
-    /* Right — inquiry form */
+    /* Painting info section */
+    .overlay-info {
+      padding: 1.8rem 2rem 1.5rem;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .overlay-info-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .overlay-info-table {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem 1.5rem;
+    }
+
+    .overlay-info-key {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      padding-top: 0.05rem;
+    }
+
+    .overlay-info-val {
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    /* Inquiry form section */
     .overlay-form-panel {
-      width: 300px;
-      flex-shrink: 0;
-      padding: 2.5rem 1.8rem 2rem;
-      overflow-y: auto;
-      border-left: 1px solid #ebebeb;
-      display: flex;
-      flex-direction: column;
+      padding: 1.8rem 2rem 2.5rem;
     }
 
     .overlay-form-panel h3 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      margin-bottom: 0.3rem;
-    }
-
-    .overlay-painting-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #aaa;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.5rem;
     }
 
     /* Form */
@@ -361,31 +376,10 @@
       line-height: 1.7;
     }
 
-    /* ── MOBILE OVERLAY ── */
     @media (max-width: 720px) {
       .overlay { padding: 0; align-items: flex-end; }
-
-      .overlay-inner {
-        flex-direction: column;
-        max-height: 96vh;
-        overflow-y: auto;
-        width: 100%;
-      }
-
-      .overlay-gallery {
-        overflow-y: visible;
-        padding: 2.5rem 1.5rem 1.5rem;
-      }
-
-      .overlay-main-img { max-height: 42vh; }
-
-      .overlay-form-panel {
-        width: 100%;
-        border-left: none;
-        border-top: 1px solid #ebebeb;
-        padding: 1.5rem 1.5rem 3rem;
-        overflow-y: visible;
-      }
+      .overlay-inner { max-width: 100%; max-height: 96vh; }
+      .overlay-info, .overlay-form-panel { padding-left: 1.5rem; padding-right: 1.5rem; }
     }
 
     /* ── FOOTER ── */
@@ -441,15 +435,24 @@
         <div class="overlay-thumbs" id="overlayThumbs"></div>
       </div>
 
+      <!-- Painting info -->
+      <div class="overlay-info">
+        <div class="overlay-info-title" id="overlayInfoTitle"></div>
+        <div class="overlay-info-table">
+          <span class="overlay-info-key">Material</span>
+          <span class="overlay-info-val" id="overlayMaterial"></span>
+          <span class="overlay-info-key">Price</span>
+          <span class="overlay-info-val" id="overlayPrice"></span>
+        </div>
+      </div>
+
       <!-- Inquiry form -->
       <div class="overlay-form-panel">
         <h3>Inquire</h3>
-        <div class="overlay-painting-label" id="overlayPaintingLabel"></div>
 
         <form class="inquiry-form" id="inquiryForm"
               action="https://formsubmit.co/koraykaragozler@gmail.com"
               method="POST">
-          <!-- Formsubmit.co config -->
           <input type="hidden" name="_subject" value="Painting Inquiry — Koray Karagözler">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="box">
@@ -502,31 +505,41 @@
       {
         title: "Untitled I",
         image: "paintings Koray/new paintings /2ay.jpg",
+        material: "Watercolor, Ink on Paper",
+        price: "On request",
         sold: false,
         extras: []
       },
       {
         title: "Untitled II",
         image: "paintings Koray/new paintings /4a.jpg",
+        material: "Watercolor, Acrylic on Paper",
+        price: "On request",
         sold: false,
         extras: []
       },
       {
         title: "Untitled III",
         image: "paintings Koray/new paintings /5.jpg",
-        sold: true,
+        material: "Watercolor, Charcoal on Paper",
+        price: "On request",
+        sold: false,
         extras: []
       },
       {
         title: "Untitled IV",
         image: "paintings Koray/new paintings /6.jpg",
+        material: "Acrylic, Ink on Paper",
+        price: "On request",
         sold: false,
         extras: []
       },
       {
         title: "Untitled V",
         image: "paintings Koray/new paintings /f23.jpg",
-        sold: true,
+        material: "Watercolor, Markers on Paper",
+        price: "On request",
+        sold: false,
         extras: []
       },
     ];
@@ -561,7 +574,6 @@
     const overlay          = document.getElementById('overlay');
     const overlayMainImg   = document.getElementById('overlayMainImg');
     const overlayThumbs    = document.getElementById('overlayThumbs');
-    const overlayLabel     = document.getElementById('overlayPaintingLabel');
     const artworkInput     = document.getElementById('artworkInput');
     const inquiryForm      = document.getElementById('inquiryForm');
     const formSuccess      = document.getElementById('formSuccess');
@@ -572,7 +584,12 @@
       // Set main image
       overlayMainImg.src = p.image;
       overlayMainImg.alt = p.title;
-      overlayLabel.textContent = p.title;
+
+      // Populate info section
+      document.getElementById('overlayInfoTitle').textContent = p.title;
+      document.getElementById('overlayMaterial').textContent = p.material;
+      document.getElementById('overlayPrice').textContent = p.price;
+
       artworkInput.value = p.title;
 
       // Build thumbnails (main + extras)
