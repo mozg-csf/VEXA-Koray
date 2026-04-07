@@ -151,6 +151,19 @@
       animation: heroReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
+    @media (min-width: 1440px) {
+      .hero-text-img {
+        width: 56%;
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero {
+        justify-content: center;
+      }
+    }
+
     /* ── ABOUT + GALLERY ─────────────────────────────── */
     .content-section {
       position: relative;
@@ -488,7 +501,7 @@
   <nav id="mainNav">
     <a class="nav-logo" href="index.html">Koray Karagozler</a>
     <ul class="nav-links">
-      <li><a href="booking.html">Booking</a></li>
+      <li><a href="booking.html">Contact</a></li>
       <li><a href="aftercare.html">Aftercare</a></li>
       <li><a href="paintings.html">Paintings</a></li>
     </ul>
@@ -499,7 +512,7 @@
 
   <!-- ── MOBILE MENU ── -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="booking.html"    onclick="closeMenu()">Booking</a>
+    <a href="booking.html"    onclick="closeMenu()">Contact</a>
     <a href="aftercare.html"  onclick="closeMenu()">Aftercare</a>
     <a href="paintings.html"  onclick="closeMenu()">Paintings</a>
   </div>
@@ -582,7 +595,7 @@
     </a>
 
     <a class="nav-card" href="booking.html">
-      <div class="nav-card-label">Booking</div>
+      <div class="nav-card-label">Contact</div>
       <div class="nav-card-arrow">Get in touch →</div>
     </a>
 
